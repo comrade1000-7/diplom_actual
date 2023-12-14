@@ -5,29 +5,44 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@Table(name = "files")
-@AllArgsConstructor
-@RequiredArgsConstructor
 @Entity
+@Table(name = "files")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class File {
 
     @Id
     @Column(nullable = false, unique = true)
     private int id;
 
-    @Column(nullable = false)
-    private String fileName;
+    @Column(nullable = false, unique = true)
+    private String filename;
 
+    @Column(nullable = false)
+    private long size;
 
     @Column(nullable = false)
-    private Long size;
+    private String type;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] content;
 
     @ManyToOne
     private User user;
 
 
-    public File(String fileName, Long size) {
-        this.fileName = fileName;
+    public File(String filename, Long size) {
+        this.filename = filename;
         this.size = size;
+    }
+
+    public File(String filename, long size, String contentType, byte[] bytes, User user) {
+        this.filename = filename;
+        this.size = size;
+        this.type = contentType;
+        this.content = bytes;
+        this.user = user;
     }
 }

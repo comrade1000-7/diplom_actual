@@ -22,7 +22,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
         return org.springframework.security.core.userdetails.User.builder()
@@ -31,4 +30,9 @@ public class UserService implements UserDetailsService {
                 .authorities(authorityList)
                 .build();
     }
+
+    public User loadUserModelByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
 }
